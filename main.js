@@ -1,5 +1,4 @@
 const billAmount = document.querySelector("#bill-amount");
-const nextStep = document.querySelector("#next");
 const cashGiven = document.querySelector("#cash-given");
 const checkButton = document.querySelector("#check-button");
 const message = document.querySelector("#error-message");
