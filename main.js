@@ -1,42 +1,56 @@
 const billAmount = document.querySelector("#bill-amount");
-const cashGiven = document.querySelector("#cash-given");
-const checkButton = document.querySelector("#check-button");
-const message = document.querySelector("#error-message");
+const cashPaid = document.querySelector("#cash-paid");
+const checkBtn = document.querySelector("#check-btn");
+const nextBtn = document.querySelector("#next");
+const hide = document.querySelector("#hide");
+const errorMessage = document.querySelector("#error-msg");
 const noOfNotes = document.querySelectorAll(".no-of-notes");
 
-const availableNotes = [2000, 500, 100, 20, 10, 5, 1];
+const availableNote = ["2000", "500", "100", "20", "10", "5", "1"];
 
-checkButton.addEventListener("click", function validateBillAndCashAmount() {
-  hideMessage();
-  if (billAmount.value > 0) {
-    if (cashGiven.value >= billAmount.value) {
-      const amountToBeReturned = cashGiven.value - billAmount.value;
-      calculateChange(amountToBeReturned);
-    } else {
-      showMessage("Do you wanna wash plates?");
-    }
+function errorMsg(msg) {
+  errorMessage.innerText = msg;
+}
+
+nextBtn.addEventListener("click", () => {
+
+  if (Number(billAmount.value > 0)) {
+    errorMessage.style.display = "none";
+    hide.style.display = "block";
+    nextBtn.style.display = "none";
+
   } else {
-    showMessage("Invalid Bill Amount");
+    errorMsg("Please enter valid number");
   }
 });
 
-function calculateChange(amountToBeReturned) {
+checkBtn.addEventListener("click", () => {
+  errorMessage.style.display = "none";
+  clearNoOfNotes();
+  if (billAmount.value > 0) {
+    if (cashPaid.value > billAmount.value) {
+      let amountToReturned = Number(cashPaid.value - billAmount.value);
+      console.log(amountToReturned);
+      calculateNote(amountToReturned)
+    } else {
+      errorMessage.style.display = "block";
+      errorMsg("Cash is less than bill, please enter right amount");
+    }
+  } else {
+    errorMsg("Please enter valid number");
+  }
+});
 
-  for (let i = 0; i < availableNotes.length; i++) {
-
-    const numberOfNotes = Math.trunc(amountToBeReturned / availableNotes[i]);
-
-    amountToBeReturned = amountToBeReturned % availableNotes[i];
-
-    noOfNotes[i].innerText = numberOfNotes;
+function clearNoOfNotes() {
+  for (noOfNoteReturned of noOfNotes) {
+    noOfNoteReturned.innerText = "";
   }
 }
 
-function hideMessage() {
-  message.style.display = "none";
-}
-
-function showMessage(msg) {
-  message.style.display = "block";
-  message.innerText = msg;
+function calculateNote(amountToReturned) {
+  for (let index = 0; index < availableNote.length; index++) {
+    let noOfNoteReturned = Math.trunc(amountToReturned / availableNote[index]);
+    amountToReturned %= availableNote[index];
+    noOfNotes[index].innerText = noOfNoteReturned;
+  }
 }
